@@ -16,7 +16,6 @@ const resolvers = {
 
       throw new AuthenticationError('Not logged in');
     },
-
     users: async () => {
       return User.find()
         .select('-__v -password')
@@ -61,10 +60,10 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-
     addThought: async (parent, args, context) => {
       if (context.user) {
-        const thought = await Thought.create({ ...args, username: context.user.username });
+        const thought = await Thought.create({ 
+          ...args, username: context.user.username });
 
         await User.findByIdAndUpdate(
           { _id: context.user._id },
@@ -77,7 +76,6 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
-    
     addReaction: async (parent, { thoughtId, reactionBody }, context) => {
       if (context.user) {
         const updatedThought = await Thought.findOneAndUpdate(
@@ -91,7 +89,6 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
-
     addFriend: async (parent, { friendId }, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
